@@ -19,6 +19,10 @@ jobs:
   apk:
     runs-on: ubuntu-latest
 
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+
     steps:
       - name: Baixar código do projeto
         uses: actions/checkout@v4
@@ -39,12 +43,22 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Configurar Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Localizar Android SDK
+        run: |
+          echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
+          find "$ANDROID_HOME/cmdline-tools" -name sdkmanager -type f
 
       - name: Instalar componentes Android
+        shell: bash
         run: |
-          sdkmanager --install "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+          set -e
+          SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -name sdkmanager -type f | head -n 1)"
+          if [ -z "$SDKMANAGER" ]; then
+            echo "Erro: sdkmanager não encontrado."
+            exit 1
+          fi
+          yes | "$SDKMANAGER" --licenses || true
+          "$SDKMANAGER" --install "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Configurar Gradle
         uses: gradle/actions/setup-gradle@v4
