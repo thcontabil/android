@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="MoneyControl">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#25282e">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>MoneyControl</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Cpath d='M8 21l5-6 4 3 7-9' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    #privacy-gate { position:fixed; inset:0; z-index:2147483647; display:flex; align-items:center; justify-content:center; padding:clamp(12px,3vw,28px); background:rgba(10,14,24,.96); color:#f8fafc; font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    #privacy-gate[hidden] { display:none !important; }
+    #privacy-gate .privacy-card { width:min(760px,100%); max-height:100%; display:flex; flex-direction:column; border:1px solid #475569; border-radius:18px; overflow:hidden; background:#111827; box-shadow:0 25px 80px #0009; }
+    #privacy-gate .privacy-head { padding:22px 22px 14px; border-bottom:1px solid #334155; }
+    #privacy-gate h1 { margin:0 0 6px; font-size:clamp(22px,4vw,30px); line-height:1.2; }
+    #privacy-gate .privacy-sub { margin:0; color:#cbd5e1; }
+    #privacy-gate .privacy-content { overflow-y:auto; overscroll-behavior:contain; padding:18px 22px; }
+    #privacy-gate .privacy-content h2 { margin:16px 0 5px; font-size:17px; }
+    #privacy-gate .privacy-content h2:first-child { margin-top:0; }
+    #privacy-gate .privacy-content p, #privacy-gate .privacy-content ul { margin:6px 0 12px; color:#e2e8f0; }
+    #privacy-gate .privacy-content li { margin:5px 0; }
+    #privacy-gate .privacy-foot { padding:14px 22px 20px; border-top:1px solid #334155; background:#0f172a; }
+    #privacy-gate .privacy-progress { font-size:12px; color:#94a3b8; margin:0 0 10px; }
+    #privacy-gate .privacy-check { display:flex; gap:10px; align-items:flex-start; margin:0 0 14px; color:#f8fafc; }
+    #privacy-gate .privacy-check input { width:20px; height:20px; flex:0 0 auto; margin-top:2px; accent-color:#818cf8; }
+    #privacy-gate .privacy-continue { width:100%; min-height:48px; border:0; border-radius:12px; padding:12px 16px; color:white; background:#4f46e5; font-weight:700; font-size:16px; }
+    #privacy-gate .privacy-continue:disabled { opacity:.4; cursor:not-allowed; }
+    html[data-privacy-lock="1"] body { overflow:hidden; }
+    @media (max-height:650px) { #privacy-gate .privacy-head { padding:14px 16px 10px; } #privacy-gate .privacy-content { padding:12px 16px; } #privacy-gate .privacy-foot { padding:10px 16px 14px; } }
+  </style>
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('mc_privacy_ack_v1') !== 'accepted') document.documentElement.dataset.privacyLock = '1';
+      } catch (e) { document.documentElement.dataset.privacyLock = '1'; }
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+      } catch (e) { document.documentElement.dataset.theme = 'light'; }
+    })();
+  </script>
+</head>
+<body>
+  <section id="privacy-gate" role="dialog" aria-modal="true" aria-labelledby="privacy-title" aria-describedby="privacy-intro" hidden>
+    <div class="privacy-card">
+      <header class="privacy-head">
+        <h1 id="privacy-title">Antes de começar: privacidade e uso pessoal</h1>
+        <p id="privacy-intro" class="privacy-sub">Leia todo o aviso. A opção de continuar só será liberada ao chegar ao final.</p>
+      </header>
+      <div id="privacy-content" class="privacy-content" tabindex="0">
+        <h2>1. Uso pessoal e exclusivo</h2>
+        <p>O MoneyControl é uma ferramenta de organização financeira pessoal. Cada instalação é destinada ao uso da própria pessoa que instalou o aplicativo. O escritório que disponibiliza o instalador não recebe automaticamente os lançamentos nem administra uma conta central neste aplicativo.</p>
+        <h2>2. Sem coleta ou envio de dados pelo aplicativo</h2>
+        <p>O APK foi preparado para funcionar localmente e offline, sem permissão de rede no Android. Não exige cadastro da pessoa, nome civil, CPF ou número bancário, e não envia ao escritório informações financeiras, relatórios, extratos ou dados de uso. Você pode criar rótulos locais para organizar suas contas. As funções financeiras são executadas no próprio aparelho. Na importação OFX, o APK guarda data, valor e descrição genérica; não persiste o número bancário nem o identificador original da transação. Um fingerprint derivado é mantido localmente para reconhecer importações repetidas. Arquivos bancários originais podem conter outros campos durante a leitura, por isso use apenas arquivos de sua confiança.</p>
+        <p>Se a pessoa escolher compartilhar um arquivo, enviá-lo por e-mail, salvá-lo em um serviço de nuvem ou usar outro aplicativo, essa ação poderá transferir o arquivo para o serviço escolhido e ficará sujeita às regras desse serviço. Isso não é um envio automático feito pelo MoneyControl.</p>
+        <h2>3. Dados e backups</h2>
+        <p>Os registros e backups automáticos ficam no armazenamento privado do aplicativo neste aparelho. Se o celular for perdido, danificado, resetado, se o aplicativo for desinstalado ou se os dados locais forem apagados, os registros podem ser perdidos. Faça cópias de segurança regularmente e guarde-as em um lugar seguro.</p>
+        <p>Os backups externos do aplicativo Android devem ser protegidos por uma senha escolhida pela pessoa. Essa senha não é enviada ao escritório nem guardada pelo aplicativo. Se você esquecer a senha de um backup criptografado, não será possível restaurá-lo. Mantenha a senha em local seguro, separado do arquivo.</p>
+        <h2>4. Limites da proteção</h2>
+        <p>O armazenamento local reduz a exposição, mas não garante segurança absoluta. Alguém com acesso desbloqueado ao aparelho, malware, cópias não protegidas ou arquivos que você compartilhar poderá acessar informações. A proteção também depende da segurança do próprio aparelho e de seu sistema operacional. Não use o aplicativo como substituto dos registros oficiais do banco.</p>
+        <h2>5. Responsabilidade e conferência</h2>
+        <p>Você é responsável por conferir os valores importados, revisar os lançamentos e manter seus backups. O aplicativo serve como ferramenta auxiliar de controle pessoal e não realiza operações bancárias, pagamentos ou conciliação oficial com o banco. Os resultados podem conter erros de importação ou de preenchimento.</p>
+        <p>A disponibilização do aplicativo não significa, por si só, que o escritório tenha acesso aos dados locais. A definição de responsabilidades jurídicas depende das atividades efetivamente realizadas e da legislação aplicável; este aviso não é uma garantia de isenção de responsabilidade.</p>
+        <h2>6. Ao continuar</h2>
+        <p>Ao marcar a confirmação abaixo, você declara que leu este aviso, compreendeu que os dados ficam no seu aparelho, que não há envio automático de seus registros ao escritório e que precisa cuidar dos backups e da senha de cópias criptografadas.</p>
+      </div>
+      <footer class="privacy-foot">
+        <p id="privacy-progress" class="privacy-progress" aria-live="polite">Role até o final do aviso para liberar a confirmação.</p>
+        <label class="privacy-check"><input id="privacy-read-check" type="checkbox" disabled><span>Li todo o aviso e compreendo como os dados e backups são tratados.</span></label>
+        <button id="privacy-continue" class="privacy-continue" type="button" disabled>Li e compreendi. Continuar</button>
+      </footer>
+    </div>
+  </section>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="logo"><img src="icon-192.png" alt=""></span>
+        <div><b>MoneyControl</b><small>controle financeiro</small></div>
+      </div>
+      <nav id="nav"></nav>
+      <div class="sidebar-foot">
+        <button id="theme-btn" class="btn ghost small" type="button"></button>
+      </div>
+    </aside>
+    <main class="main">
+      <div id="banner"></div>
+      <div id="view"></div>
+    </main>
+  </div>
+  <button id="fab" class="fab" type="button" aria-label="Novo lançamento rápido">+</button>
+  <div id="toasts"></div>
+  <div id="tooltip" role="tooltip"></div>
+  <script>
+    (function () {
+      var KEY = 'mc_privacy_ack_v1';
+      var gate = document.getElementById('privacy-gate');
+      var content = document.getElementById('privacy-content');
+      var check = document.getElementById('privacy-read-check');
+      var button = document.getElementById('privacy-continue');
+      var progress = document.getElementById('privacy-progress');
+      var resolveGate;
+      window.MCPrivacyGateReady = new Promise(function (resolve) { resolveGate = resolve; });
+      var accepted = false;
+      try { accepted = localStorage.getItem(KEY) === 'accepted'; } catch (e) {}
+      if (accepted) { gate.hidden = true; document.documentElement.removeAttribute('data-privacy-lock'); resolveGate(); return; }
+      gate.hidden = false;
+      var reachedEnd = false;
+      function checkEnd() {
+        reachedEnd = content.scrollTop + content.clientHeight >= content.scrollHeight - 8;
+        if (reachedEnd) { check.disabled = false; progress.textContent = 'Você chegou ao final. Marque a confirmação para continuar.'; }
+      }
+      content.addEventListener('scroll', checkEnd, { passive: true });
+      window.addEventListener('resize', checkEnd);
+      check.addEventListener('change', function () { button.disabled = !(reachedEnd && check.checked); });
+      button.addEventListener('click', function () {
+        if (!reachedEnd || !check.checked) return;
+        try { localStorage.setItem(KEY, 'accepted'); } catch (e) {}
+        gate.hidden = true; document.documentElement.removeAttribute('data-privacy-lock'); resolveGate();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (!gate.hidden && (e.key === 'Escape' || e.key === 'Enter' && document.activeElement !== check && document.activeElement !== button)) { e.preventDefault(); e.stopPropagation(); }
+      }, true);
+      setTimeout(checkEnd, 100);
+    })();
+  </script>
+  <script src="backend.js"></script>
+  <script src="sync-config.js"></script>
+  <script src="sync.js"></script>
+  <script src="charts.js"></script>
+  <script src="core.js"></script>
+  <script src="pages.js"></script>
+
+</body>
+</html>
